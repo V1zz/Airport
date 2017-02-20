@@ -8,6 +8,17 @@ namespace PlaneLib
 {
     class Service
     {
+
+        //Console.WriteLine("Save changes? <Y/N>");
+        //ConsoleKeyInfo keys = Console.ReadKey(true);
+        //return keys.Key == ConsoleKey.Y ? tmp : plane;
+        private bool Check(int count, out int line)
+        {
+            if (int.TryParse(Console.ReadLine(), out line))
+                if (line > -1 & line < count)
+                    return true;
+            return false;
+        }
         protected virtual PlaneType GetPlaneType()
         {
             int temp;
@@ -22,16 +33,34 @@ namespace PlaneLib
             }
         }
 
-        public Plane PlaneEditor<T>(T plane) where T : Plane
+        public int EditorPrinter()
         {
+            Console.WriteLine(@"Witch one operation?
+    1.Flight Number
+    2.Type of plane");
+            int i;
+            return Check(3, out i) ? i : EditorPrinter();
+        }
+
+        public Plane PlaneEditorFnum<T>(T plane) where T : Plane
+        {
+            Console.Clear();
+            Console.WriteLine(plane);
+            Console.WriteLine("Changing Flight number!!!");
             var tmp = plane;
-            while (true)
+            Console.Write(tmp.FNum + " > ");
+
+            int temp;
+            if (int.TryParse(Console.ReadLine(), out temp))
             {
-                break;
+                plane.FNum = temp;
+                Console.WriteLine("Reading done!!!");
             }
-            Console.WriteLine("Save changes? <Y/N>");
-            ConsoleKeyInfo keys = Console.ReadKey(true);
-            return keys.Key == ConsoleKey.Y ? tmp : plane;
+            else
+            {
+                Console.WriteLine("Operation failed.");
+            }
+            return tmp;
         }
 
     }

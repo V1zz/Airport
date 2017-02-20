@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace PlaneLib
 {
-    public class Airport<T> where T : Plane
+    public class Airport<T> where T : Plane, new()
     {
         T[] planes;
         Service help = new Service();
@@ -25,18 +25,46 @@ namespace PlaneLib
         {
             if (planes.Length == 0 )
                 throw new Exception("Airport is EMPTY");
-
-            int tmp;
-            FindPlane(fnum, out tmp);
-            planes[tmp] = planes[planes.Length - 1];
-            Array.Resize(ref planes, planes.Length - 1);
+            try
+            {
+                if (planes.Length == 0)
+                    throw new Exception();
+                    int tmp;
+                FindPlane(fnum, out tmp);
+                planes[tmp] = planes[planes.Length - 1];
+                Array.Resize(ref planes, planes.Length - 1);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
         //todo!!!
 
         public void Editor(int fnum)
         {
-            T tmp = FindPlane()
+            var tmp = FindPlane(fnum);
+            int t;
+            try
+            {
+                do
+                {
+                    t = help.EditorPrinter();
+                    switch (t)
+                    {
+                        case 1:
+                            help.PlaneEditorFnum(tmp);
+                            break;
+                        default:
+                            break;
+                    }
+                } while (t != 0);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
         public T FindPlane(int fnum)
