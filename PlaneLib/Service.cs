@@ -36,10 +36,14 @@ namespace PlaneLib
         public int EditorPrinter()
         {
             Console.WriteLine(@"Witch one operation?
+    0.Exit
     1.Flight Number
-    2.Type of plane");
+    2.City
+    3.Airline 
+    4.Trminal and gate
+    5.Date and time");
             int i;
-            return Check(3, out i) ? i : EditorPrinter();
+            return Check(6, out i) ? i : EditorPrinter();
         }
 
         public Plane PlaneEditorFnum<T>(T plane) where T : Plane
@@ -47,8 +51,7 @@ namespace PlaneLib
             Console.Clear();
             Console.WriteLine(plane);
             Console.WriteLine("Changing Flight number!!!");
-            var tmp = plane;
-            Console.Write(tmp.FNum + " > ");
+            Console.Write(plane.FNum + " > ");
 
             int temp;
             if (int.TryParse(Console.ReadLine(), out temp))
@@ -60,8 +63,9 @@ namespace PlaneLib
             {
                 Console.WriteLine("Operation failed.");
             }
-            return tmp;
+            return plane;
         }
-
+        
+        public string 
     }
 }

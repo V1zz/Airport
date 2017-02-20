@@ -45,16 +45,30 @@ namespace PlaneLib
         public void Editor(int fnum)
         {
             var tmp = FindPlane(fnum);
-            int t;
+            var t = -1;
             try
             {
                 do
                 {
-                    t = help.EditorPrinter();
-                    switch (t)
+                    switch (help.EditorPrinter())
                     {
-                        case 1:
-                            help.PlaneEditorFnum(tmp);
+                        case 0:
+                            t = 0;
+                            break;
+                        case 1:                             //FNum
+                            tmp = (T) help.PlaneEditorFnum(tmp);
+                            break;
+                        case 2:                             //City
+
+                            break;
+                        case 3:                             //Airline
+
+                            break;
+                        case 4:                             //Terminal & gate
+
+                            break;
+                        case 5:                             //Date & time
+
                             break;
                         default:
                             break;

@@ -15,7 +15,7 @@ namespace PlaneLib
         protected int Gate { get; set; }
         protected string Status { get; set; }
         protected DateTime Time { get; set; }
-        protected PlaneType Type { get; set; }
+        public PlaneType Type { get; set; }
         
 
         
