@@ -9,12 +9,12 @@ namespace PlaneLib
     public abstract class Plane
     {
         public int FNum { get; set; }
-        protected string Airlines { get; set; }
-        protected string City { get; set; }
-        protected string Terminal { get; set; }
-        protected int Gate { get; set; }
-        protected string Status { get; set; }
-        protected DateTime Time { get; set; }
+        protected internal string Airlines { get; set; }
+        protected internal string City { get; set; }
+        protected internal string Terminal { get; set; }
+        protected internal int Gate { get; set; }
+        protected internal string Status { get; set; }
+        protected internal DateTime Time { get; set; }
         public PlaneType Type { get; set; }
         
 

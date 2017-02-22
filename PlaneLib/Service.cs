@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PlaneLib
@@ -11,7 +12,7 @@ namespace PlaneLib
 
         //Console.WriteLine("Save changes? <Y/N>");
         //ConsoleKeyInfo keys = Console.ReadKey(true);
-        //return keys.Key == ConsoleKey.Y ? tmp : plane;
+        //return keys.Key == ConsoleKey.Y ? tmp : plane;C:\Users\chuma\onedrive\документы\visual studio 2015\Projects\AirportNew\PlaneLib\Airport.cs
         private bool Check(int count, out int line)
         {
             if (int.TryParse(Console.ReadLine(), out line))
@@ -19,7 +20,7 @@ namespace PlaneLib
                     return true;
             return false;
         }
-        protected virtual PlaneType GetPlaneType()
+        /*protected virtual PlaneType GetPlaneType()
         {
             int temp;
             while (true)
@@ -31,7 +32,7 @@ namespace PlaneLib
 
                 return temp == 2 ? PlaneType.Departure : PlaneType.Arrival;
             }
-        }
+        }*/
 
         public int EditorPrinter()
         {
@@ -46,7 +47,7 @@ namespace PlaneLib
             return Check(6, out i) ? i : EditorPrinter();
         }
 
-        public Plane PlaneEditorFnum<T>(T plane) where T : Plane
+        public Plane EditFnumPlane<T>(T plane) where T : Plane
         {
             Console.Clear();
             Console.WriteLine(plane);
@@ -65,7 +66,41 @@ namespace PlaneLib
             }
             return plane;
         }
-        
-        public string 
+
+        public Plane EditCityPlane<T>(T plane) where T : Plane
+        {
+            Console.Clear();
+            Console.WriteLine(plane);
+            Console.WriteLine("Changing City/Port");
+            Console.Write(plane.City + " > ");
+
+            var tmp = Console.ReadLine() as string;
+            if (tmp != null)
+                plane.City = tmp;
+
+            return plane;
+        }
+
+        public Plane EditAirlinePlane<T>(T plane) where T : Plane
+        {
+            Console.Clear();
+            Console.WriteLine(plane);
+            Console.WriteLine("Changing Airline");
+            Console.Write(plane.City + " > ");
+
+            var tmp = Console.ReadLine() as string;
+            if (tmp != null)
+                plane.Airlines = tmp;
+
+            return plane;
+        }
+
+        //protected internal Plane EditTermGate<T>(T plane) where T : Plane
+        //{
+        //    Console.Clear();
+        //    Console.WriteLine(plane);
+        //    Console.WriteLine("Changing Terminal value");
+        //    Console.WriteLine(plane.Terminal + " > ");
+        //}
     }
 }
