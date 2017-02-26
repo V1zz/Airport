@@ -14,12 +14,19 @@ namespace PlaneLib
         protected internal string Terminal { get; set; }
         protected internal int Gate { get; set; }
         protected internal string Status { get; set; }
-        protected internal DateTime Time { get; set; }
+        public DateTime Time { get; set; }
         public PlaneType Type { get; set; }
-        
 
-        
-       
+        public Plane()
+        {
+            Airlines = "0";
+            City = "0";
+            Terminal = "0";
+            Status = "0";
+
+        }
+
+
 
 
 

@@ -7,10 +7,17 @@ using System.Threading.Tasks;
 
 namespace PlaneLib
 {
-    class Departure : Plane
+    public class Departure : Plane
     {
-        public Departure() { }
+        public Departure(DateTime time) : base()
+        {
+            this.Time = time;
+            Type = PlaneType.Departure;
+        }
 
-
+        public Departure()
+        {
+            
+        }
     }
 }

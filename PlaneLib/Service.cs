@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PlaneLib
 {
-    class Service
+    public class Service
     {
         /*protected virtual PlaneType GetPlaneType()
                {
@@ -132,5 +133,56 @@ namespace PlaneLib
             ConsoleKeyInfo keys = Console.ReadKey(true);
             return keys.Key == ConsoleKey.Y ? temp : plane;
         }
+
+        public static void QSort<T>(Airport<T> planes, int fist, int last) where T : Plane, new()
+        {
+            var tmp = new Airport<T>();
+            tmp = planes;
+            var tmp1 = new T();
+
+            int i = fist,
+                j = last;
+
+            T x = planes[fist + (last - fist)/2];
+
+            while (i <= j)
+            {
+                while (planes[i].Time < x.Time)
+                    i++;
+                while (planes[j].Time > x.Time)
+                    j--;
+                if (i <= j)
+                {
+                    tmp1 = planes[i];
+                    planes[i] = planes[j];
+                    planes[j] = tmp1;
+                    i++;
+                    j--;
+                }
+            }
+            if (i < fist)
+                QSort(planes, i, last);
+            if (fist < last)
+                QSort(planes, fist, j);
+
+        } 
+
+        //public static Airport<T> QuickSort<T>(IEnumerable<Plane> i) where T : Plane, new()
+        //{
+        //    try
+        //    {
+        //        var quickSort = (IEnumerable<T>)i;
+        //        if (!quickSort.Any()) return (Airport<T>) quickSort;
+        //        var p = quickSort.ElementAt(new Random().Next(0, quickSort.Count() - 1));
+        //        return (Airport<T>) QuickSort<T>(quickSort.Where(x => x.Time < p.Time)).Concat(quickSort.Where(x => x.Time == p.Time))
+        //            .Concat(QuickSort<T>(quickSort.Where(x => x.Time > p.Time)));
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception.Message);
+        //        Console.WriteLine(exception.StackTrace);
+        //    }
+        //    return (Airport<T>) i;
+        //}
     }
 }

@@ -11,18 +11,35 @@ namespace Program
     {
         static void Main(string[] args)
         {
-            var port = new Airport<Plane>();
             try
             {
-
-            }
-            catch (Exception exception)
+                var planes = new Airport<Departure>
             {
-                Console.WriteLine(exception.Message);
-                throw;
-            }
-        }
+                new Departure(DateTime.MaxValue),
+                new Departure(DateTime.Now)
+            };
 
-        //static void 
+                foreach (var plane in planes)
+                {
+                    Console.WriteLine(plane);
+                }
+
+                Service.QSort(planes, 0, planes.Count() - 1);
+
+                foreach (var plane in planes)
+                {
+                    Console.WriteLine(plane);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                Console.ReadLine();
+            }
+            Console.ReadLine();
+            //static void 
+        }
     }
 }

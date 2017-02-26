@@ -1,11 +1,15 @@
-﻿using System;
+﻿using PlaneLib;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PlaneLib
 {
-    public class Airport<T> where T : Plane, new()
+    public class Airport<T> : IEnumerable<T> where T : Plane, new()
     {
         T[] planes;
+
         Service help = new Service();
 
 
@@ -40,7 +44,7 @@ namespace PlaneLib
             }
         }
 
-        //todo!!!
+        //todo!!! -> //DateTime
         public void Editor(int fnum)
         {
             var tmp = FindPlane(fnum);
@@ -98,5 +102,26 @@ namespace PlaneLib
             return null;
         }
 
+        private IEnumerator GetEnumerator1()
+        {
+            return this.GetEnumerator();
+        }
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new AirpEnum<T>(planes);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator1();
+        }
+
+        protected internal T this[int index]
+        {
+            get { return planes[index]; }
+            set { planes[index] = value; }
+        }
+
+        
     }
 }
