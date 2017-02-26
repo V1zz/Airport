@@ -2,27 +2,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace PlaneLib
 {
     public class Airport<T> : IEnumerable<T> where T : Plane, new()
     {
-        T[] planes;
+        private T[] planes; 
 
-        Service help = new Service();
-
+        private Service help = new Service();
 
         public Airport()
         {
-            planes = new T[0];
+            planes = new T[planes.Length];
         }
-
-
+        
         public void Add(T plane)
         {
             Array.Resize(ref planes, planes.Length + 1);
             planes[planes.Length - 1] = plane;
+
+            Service.QSort<T>(Service.ConvertTo<T>(planes), 0, planes.Length);
         }
 
         public void Remove(int fnum)
@@ -84,11 +85,12 @@ namespace PlaneLib
             }
         }
 
-        public T FindPlane(int fnum)
+        private T FindPlane(int fnum)
         {
             return planes.FirstOrDefault(t => t.FNum == fnum);
         }
-        public T FindPlane(int fnum, out int indx)
+
+        private T FindPlane(int fnum, out int indx)
         {
             for (int i = 0; i < planes.Length; i++)
             {
@@ -106,6 +108,7 @@ namespace PlaneLib
         {
             return this.GetEnumerator();
         }
+
         public IEnumerator<T> GetEnumerator()
         {
             return new AirpEnum<T>(planes);

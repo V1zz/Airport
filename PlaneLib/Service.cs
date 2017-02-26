@@ -35,7 +35,6 @@ namespace PlaneLib
             return false;
         }
        
-
         protected internal int EditorPrinter()
         {
             Console.WriteLine(@"Witch one operation?
@@ -136,6 +135,8 @@ namespace PlaneLib
 
         public static void QSort<T>(Airport<T> planes, int fist, int last) where T : Plane, new()
         {
+            if (planes.Count() <= 1)
+                return;
             var tmp = new Airport<T>();
             tmp = planes;
             var tmp1 = new T();
@@ -165,24 +166,18 @@ namespace PlaneLib
             if (fist < last)
                 QSort(planes, fist, j);
 
-        } 
+        }
 
-        //public static Airport<T> QuickSort<T>(IEnumerable<Plane> i) where T : Plane, new()
-        //{
-        //    try
-        //    {
-        //        var quickSort = (IEnumerable<T>)i;
-        //        if (!quickSort.Any()) return (Airport<T>) quickSort;
-        //        var p = quickSort.ElementAt(new Random().Next(0, quickSort.Count() - 1));
-        //        return (Airport<T>) QuickSort<T>(quickSort.Where(x => x.Time < p.Time)).Concat(quickSort.Where(x => x.Time == p.Time))
-        //            .Concat(QuickSort<T>(quickSort.Where(x => x.Time > p.Time)));
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        Console.WriteLine(exception.Message);
-        //        Console.WriteLine(exception.StackTrace);
-        //    }
-        //    return (Airport<T>) i;
-        //}
+        public static Airport<T> ConvertTo<T>(T[] planes) where T : Plane, new()
+        {
+            var tmp = new Airport<T>();
+            if (planes.Length <= 1)
+                return tmp;
+            foreach (var t in planes)
+            {
+                tmp.Add(t);
+            }
+            return tmp;
+        }
     }
 }
