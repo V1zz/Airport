@@ -41,10 +41,6 @@ namespace PlaneLib
         }
 
         //todo!!!
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="fnum"></param>
         public void Editor(int fnum)
         {
             var tmp = FindPlane(fnum);
@@ -68,7 +64,7 @@ namespace PlaneLib
                             tmp = (T) help.EditAirlinePlane(tmp);
                             break;
                         case 4:                             //Terminal & gate
-                            Console.WriteLine("Expected code");
+                            tmp = (T) help.EditTermGate(tmp);
                             break;
                         case 5:                             //Date & time
                             Console.WriteLine("Expected code");
