@@ -14,17 +14,17 @@ namespace Program
             try
             {
                 var planes = new Airport<Departure>
-            {
-                new Departure(DateTime.MaxValue),
-                new Departure(DateTime.Now)
-            };
+                {
+                    new Departure(DateTime.MaxValue),
+                    new Departure(DateTime.Now)
+                };
 
                 foreach (var plane in planes)
                 {
                     Console.WriteLine(plane);
                 }
 
-                Service.QSort(planes, 0, planes.Count() - 1);
+                Service.QSort<Departure>( (Airport<Departure>) planes, 0, planes.Count() - 1)};
 
                 foreach (var plane in planes)
                 {

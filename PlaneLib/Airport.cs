@@ -9,42 +9,91 @@ namespace PlaneLib
 {
     public class Airport<T> : IEnumerable<T> where T : Plane, new()
     {
-        private T[] planes; 
+        private T[] _planes;
+        private static readonly T[] _emptyMas = new T[0];
+        private int _size;
 
         private Service help = new Service();
 
         public Airport()
         {
-            planes = new T[planes.Length];
+            this._planes = _emptyMas;
         }
-        
+
+        private int Capacity
+        {
+            get
+            {
+                return this._planes.Length;
+            }
+            set
+            {
+                if (value < this._size)
+                    throw new ArgumentOutOfRangeException();
+                if (value == this._planes.Length)
+                    return;
+                if (value > 0)
+                {
+                    var objArray = new T[value];
+                    if (this._size > 0)
+                        Array.Copy(this._planes, 0, objArray, 0, this._size);
+                    this._planes = objArray;
+                }
+                else
+                    this._planes = _emptyMas;
+            }
+        }
+
+        private void EnsureCapacity(int min)
+        {
+            if (this._planes.Length >= min)
+                return;
+            var num = this._planes.Length == 0 ? 4 : this._planes.Length * 2;
+            if (num > 2146435071)
+                num = 2146435071;
+            if (num < min)
+                num = min;
+            this.Capacity = num;
+        }
+
         public void Add(T plane)
         {
-            Array.Resize(ref planes, planes.Length + 1);
-            planes[planes.Length - 1] = plane;
+            #region old
 
-            Service.QSort<T>(Service.ConvertTo<T>(planes), 0, planes.Length);
+            /*Array.Resize(ref _planes, _planes.Length + 1);
+            _planes[_planes.Length - 1] = plane;*/
+
+            #endregion
+
+            if (this._size == this._planes.Length)
+                this.EnsureCapacity(this._size + 1);
+            var objArray = this._planes;
+            var num = this._size;
+            this._size = num + 1;
+            var index = num;
+            var obj = plane;
+            objArray[index] = obj;
+            Service.QSort(_planes, 0, _planes.Length); //Q-Sorting
         }
-
-        public void Remove(int fnum)
+        
+        public void RemoveByIndex(int index)
         {
-            if (planes.Length == 0 )
-                throw new Exception("Airport is EMPTY");
-            try
-            {
-                if (planes.Length == 0)
-                    throw new Exception();
-                    int tmp;
-                FindPlane(fnum, out tmp);
-                planes[tmp] = planes[planes.Length - 1];
-                Array.Resize(ref planes, planes.Length - 1);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
+            if (index >= this._size)
+                throw new ArgumentOutOfRangeException();
+            this._size = this._size - 1;
+            if (index < this._size)
+                Array.Copy(this._planes, index + 1, this._planes, index, this._size - index);
+            this._planes[this._size] = default(T);
         }
 
+        public bool RemoveByPlane(T plane)
+        {
+            var indx = Array.IndexOf<T>(_planes, plane, 0, _planes.Length);
+            if (indx < 0)
+                return false;
+            this.RemoveByIndex(indx);
+            return true;
+        }
         //todo!!! -> //DateTime
         public void Editor(int fnum)
         {
@@ -87,22 +136,25 @@ namespace PlaneLib
 
         private T FindPlane(int fnum)
         {
-            return planes.FirstOrDefault(t => t.FNum == fnum);
+            return _planes.FirstOrDefault(t => t.FNum == fnum);
         }
 
         private T FindPlane(int fnum, out int indx)
         {
-            for (int i = 0; i < planes.Length; i++)
+            for (var i = 0; i < _planes.Length; i++)
             {
-                if (planes.All(t => planes[i].FNum == fnum))
-                {
-                    indx = i;
-                    return planes[i];
-                }
+                if (_planes.Any(t => _planes[i].FNum != fnum)) continue;
+                indx = i;
+                return _planes[i];
             }
             indx = -1;
             return null;
         }
+
+        public Airport<T>.Enumerator GetEnumerator()
+        {
+            
+        }  
 
         private IEnumerator GetEnumerator1()
         {
@@ -111,18 +163,28 @@ namespace PlaneLib
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new AirpEnum<T>(planes);
+            return new AirpEnum<T>(_planes);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator() //
         {
-            return GetEnumerator1();
+            return (IEnumerator<T>) new Airport<T>.Enumerator(this);
         }
 
         protected internal T this[int index]
         {
-            get { return planes[index]; }
-            set { planes[index] = value; }
+            get
+            {
+                if (index >= this._size)
+                    throw new ArgumentOutOfRangeException();
+                return this._planes[index];
+            }
+            set
+            {
+                if (index >= this._size)
+                    throw new ArgumentOutOfRangeException();
+                this._planes[index] = value;
+            }
         }
 
         

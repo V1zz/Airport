@@ -133,19 +133,13 @@ namespace PlaneLib
             return keys.Key == ConsoleKey.Y ? temp : plane;
         }
 
-        public static void QSort<T>(Airport<T> planes, int fist, int last) where T : Plane, new()
+        public static void QSort<T>(T[] planes, int fist, int last) where T : Plane//, new()
         {
-            if (planes.Count() <= 1)
+            if (planes.Length <= 1)
                 return;
-            var tmp = new Airport<T>();
-            tmp = planes;
-            var tmp1 = new T();
-
             int i = fist,
                 j = last;
-
-            T x = planes[fist + (last - fist)/2];
-
+            var x = planes[fist + (last - fist)/2];
             while (i <= j)
             {
                 while (planes[i].Time < x.Time)
@@ -154,9 +148,9 @@ namespace PlaneLib
                     j--;
                 if (i <= j)
                 {
-                    tmp1 = planes[i];
+                    var tmp = planes[i];
                     planes[i] = planes[j];
-                    planes[j] = tmp1;
+                    planes[j] = tmp;
                     i++;
                     j--;
                 }
@@ -165,19 +159,18 @@ namespace PlaneLib
                 QSort(planes, i, last);
             if (fist < last)
                 QSort(planes, fist, j);
-
         }
 
-        public static Airport<T> ConvertTo<T>(T[] planes) where T : Plane, new()
-        {
-            var tmp = new Airport<T>();
-            if (planes.Length <= 1)
-                return tmp;
-            foreach (var t in planes)
-            {
-                tmp.Add(t);
-            }
-            return tmp;
-        }
+    //    public static T[] ConvertTo<T>(T[] planes) where T : Plane, new()
+    //    {
+    //        var tmp = new T[];
+    //        if (planes.Length <= 1)
+    //            return tmp;
+    //        foreach (var t in planes)
+    //        {
+    //            tmp.Add(t);
+    //        }
+    //        return tmp;
+    //    }
     }
 }

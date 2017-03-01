@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,11 +27,12 @@ namespace PlaneLib
         {
             GC.SuppressFinalize(this);
         }
+        
 
         public bool MoveNext()
         {
             pos++;
-            return (pos < _planes.Count());
+            return pos < _planes.Length;
         }
 
         public void Reset()
