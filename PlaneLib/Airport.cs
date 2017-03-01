@@ -22,76 +22,67 @@ namespace PlaneLib
 
         private int Capacity
         {
-            get
-            {
-                return this._planes.Length;
-            }
+            get { return _planes.Length; }
             set
             {
-                if (value < this._size)
+                if (value < _size)
                     throw new ArgumentOutOfRangeException();
-                if (value == this._planes.Length)
-                    return;
-                if (value > 0)
+                if (value != _planes.Length)
                 {
-                    var objArray = new T[value];
-                    if (this._size > 0)
-                        Array.Copy(this._planes, 0, objArray, 0, this._size);
-                    this._planes = objArray;
+                    if (value > 0)
+                    {
+                        var newItems = new T[value];
+                        if (_size > 0)
+                        {
+                        Array.Copy(newItems, 0, _planes, 0, _size);
+                        _planes = newItems;
+
+                    }
                 }
-                else
-                    this._planes = _emptyMas;
+                    else
+                        _planes = _emptyMas;
+                }
             }
         }
 
         private void EnsureCapacity(int min)
         {
-            if (this._planes.Length >= min)
+            if (_planes.Length >= min)
                 return;
-            var num = this._planes.Length == 0 ? 4 : this._planes.Length * 2;
-            if (num > 2146435071)
+            var num = _planes.Length == 0 ? 4 : _planes.Length * 2;
+            if ((uint)num > 2146435071)
                 num = 2146435071;
             if (num < min)
                 num = min;
-            this.Capacity = num;
+            Capacity = num;
         }
 
         public void Add(T plane)
         {
-            #region old
-
-            /*Array.Resize(ref _planes, _planes.Length + 1);
-            _planes[_planes.Length - 1] = plane;*/
-
-            #endregion
-
-            if (this._size == this._planes.Length)
-                this.EnsureCapacity(this._size + 1);
-            var objArray = this._planes;
-            var num = this._size;
-            this._size = num + 1;
-            var index = num;
-            var obj = plane;
-            objArray[index] = obj;
-            Service.QSort(_planes, 0, _planes.Length); //Q-Sorting
+            if (_size == _planes.Length)
+                EnsureCapacity(++_size);
+            _planes[++_size] = plane;
+            Service.QSort(_planes, 0, _planes.Length - 1);
         }
-        
+
+        public int Count => _size;
+
         public void RemoveByIndex(int index)
         {
-            if (index >= this._size)
+            if (index >= _size)
                 throw new ArgumentOutOfRangeException();
-            this._size = this._size - 1;
-            if (index < this._size)
-                Array.Copy(this._planes, index + 1, this._planes, index, this._size - index);
-            this._planes[this._size] = default(T);
+            _size = _size - 1;
+            if (index < _size)
+                Array.Copy(_planes, index + 1, _planes, index, _size - index);
+            _planes[_size] = default(T);
         }
 
         public bool RemoveByPlane(T plane)
         {
-            var indx = Array.IndexOf<T>(_planes, plane, 0, _planes.Length);
+            var indx = Array.IndexOf(_planes, plane, 0, _planes.Length);
             if (indx < 0)
                 return false;
-            this.RemoveByIndex(indx);
+            RemoveByIndex(indx);
             return true;
         }
         //todo!!! -> //DateTime
@@ -151,24 +142,14 @@ namespace PlaneLib
             return null;
         }
 
-        public Airport<T>.Enumerator GetEnumerator()
-        {
-            
-        }  
-
-        private IEnumerator GetEnumerator1()
-        {
-            return this.GetEnumerator();
-        }
-
         public IEnumerator<T> GetEnumerator()
         {
-            return new AirpEnum<T>(_planes);
+            return ((IEnumerable<T>)_planes).GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() //
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator<T>) new Airport<T>.Enumerator(this);
+            return ((IEnumerable<T>)_planes).GetEnumerator();
         }
 
         protected internal T this[int index]
@@ -186,7 +167,6 @@ namespace PlaneLib
                 this._planes[index] = value;
             }
         }
-
-        
     }
+
 }

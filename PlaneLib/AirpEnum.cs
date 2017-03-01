@@ -8,36 +8,5 @@ using System.Threading.Tasks;
 
 namespace PlaneLib
 {
-    class AirpEnum<T> : IEnumerator<T> where T : Plane, new()
-    {
-        private T[] _planes;
-
-        private int pos = -1;
-
-        public AirpEnum(T[] planes)
-        {
-            _planes = planes;
-        }  
-
-        public T Current => _planes[pos];
-
-        object IEnumerator.Current => Current;
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-        
-
-        public bool MoveNext()
-        {
-            pos++;
-            return pos < _planes.Length;
-        }
-
-        public void Reset()
-        {
-            pos = -1;
-        }
-    }
+    
 }

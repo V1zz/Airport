@@ -29,7 +29,7 @@ namespace PlaneLib
         //return keys.Key == ConsoleKey.Y ? tmp : plane;C:\Users\chuma\onedrive\документы\visual studio 2015\Projects\AirportNew\PlaneLib\Airport.cs
         private bool Check(int count, out int line)
         {
-            if (int.TryParse(Console.ReadLine(), out line))
+            if (Int32.TryParse(Console.ReadLine(), out line))
                 if (line > -1 & line < count)
                     return true;
             return false;
@@ -56,7 +56,7 @@ namespace PlaneLib
             Console.Write(plane.FNum + " > ");
 
             int temp;
-            if (int.TryParse(Console.ReadLine(), out temp))
+            if (Int32.TryParse(Console.ReadLine(), out temp))
             {
                 plane.FNum = temp;
                 Console.WriteLine("Reading done!!!");
@@ -76,7 +76,7 @@ namespace PlaneLib
             Console.Write(plane.City + " > ");
 
             var tmp = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(tmp))
+            if (!String.IsNullOrWhiteSpace(tmp))
                 plane.City = tmp;
 
             return plane;
@@ -117,7 +117,7 @@ namespace PlaneLib
                 try
                 {
                     temp.Terminal = rdr.Substring(0, 0);
-                    temp.Gate = int.Parse(rdr.Substring(1, 2));
+                    temp.Gate = Int32.Parse(rdr.Substring(1, 2));
                 }
                 catch (Exception ex)
                 {
@@ -133,44 +133,45 @@ namespace PlaneLib
             return keys.Key == ConsoleKey.Y ? temp : plane;
         }
 
-        public static void QSort<T>(T[] planes, int fist, int last) where T : Plane//, new()
+        public static void QSort<T>(IEnumerable<T> planes, int fist, int last) where T : Plane, new()
         {
-            if (planes.Length <= 1)
+            var enumerable = planes as T[] ?? planes.ToArray();
+            if (enumerable.Count() <= 1)
                 return;
             int i = fist,
                 j = last;
-            var x = planes[fist + (last - fist)/2];
+            var x = enumerable[fist + (last - fist) / 2];
             while (i <= j)
             {
-                while (planes[i].Time < x.Time)
+                while (enumerable[i].Time < x.Time)
                     i++;
-                while (planes[j].Time > x.Time)
+                while (enumerable[j].Time > x.Time)
                     j--;
                 if (i <= j)
                 {
-                    var tmp = planes[i];
-                    planes[i] = planes[j];
-                    planes[j] = tmp;
+                    var tmp = enumerable[i];
+                    enumerable[i] = enumerable[j];
+                    enumerable[j] = tmp;
                     i++;
                     j--;
                 }
             }
             if (i < fist)
-                QSort(planes, i, last);
+                QSort(enumerable, i, last);
             if (fist < last)
-                QSort(planes, fist, j);
+                QSort(enumerable, fist, j);
         }
 
-    //    public static T[] ConvertTo<T>(T[] planes) where T : Plane, new()
-    //    {
-    //        var tmp = new T[];
-    //        if (planes.Length <= 1)
-    //            return tmp;
-    //        foreach (var t in planes)
-    //        {
-    //            tmp.Add(t);
-    //        }
-    //        return tmp;
-    //    }
+        //    public static T[] ConvertTo<T>(T[] planes) where T : Plane, new()
+        //    {
+        //        var tmp = new T[];
+        //        if (planes.Length <= 1)
+        //            return tmp;
+        //        foreach (var t in planes)
+        //        {
+        //            tmp.Add(t);
+        //        }
+        //        return tmp;
+        //    }
     }
 }

@@ -24,7 +24,7 @@ namespace Program
                     Console.WriteLine(plane);
                 }
 
-                Service.QSort<Departure>( (Airport<Departure>) planes, 0, planes.Count() - 1)};
+                Service.QSort(planes, 0, planes.Count() - 1);
 
                 foreach (var plane in planes)
                 {
